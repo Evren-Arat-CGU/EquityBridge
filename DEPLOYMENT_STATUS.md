@@ -1,59 +1,77 @@
-# 🚨 EMERGENCY DEPLOYMENT STATUS
+# 🚀 DEPLOYMENT STATUS - TRACKING
 
-**Started:** Just now  
-**Target:** 3:45 PM (45 minutes)  
+**Started:** 3:00 PM  
+**Target:** 3:45 PM  
 **Demo:** 6:00 PM
 
 ---
 
-## ✅ COMPLETED
+## ✅ BACKEND (Railway)
 
-- ✅ Deployment configs updated and pushed to GitHub
-- ✅ Railway CLI deployment script created
-- ✅ Vercel CLI deployment script created
-- ✅ Emergency deployment guide created
+**Status:** ⏳ IN PROGRESS  
+**URL:** `https://________________.railway.app`  
+**Health Check:** ⏳ Pending  
+**API Test:** ⏳ Pending
 
----
-
-## ⏳ IN PROGRESS
-
-### Backend (Railway)
-- [ ] Deploying...
-- [ ] URL: `https://[TBD].railway.app`
-- [ ] Status: [TBD]
-
-### Frontend (Vercel)
-- [ ] Deploying...
-- [ ] URL: `https://[TBD].vercel.app`
-- [ ] Status: [TBD]
+**Steps:**
+- [ ] Railway project created
+- [ ] GitHub repo connected
+- [ ] Build successful
+- [ ] URL obtained
+- [ ] Health check: `/` returns `{"status":"healthy"}`
+- [ ] API test: `/api/match-grants` works
 
 ---
 
-## 📋 NEXT STEPS
+## ✅ FRONTEND (Vercel)
 
-1. **Deploy Backend:**
-   - Use Railway web UI OR
-   - Run: `DEPLOY_RAILWAY_CLI.bat`
-   - Get Railway URL
+**Status:** ⏳ PENDING  
+**URL:** `https://________________.vercel.app`  
+**Loads:** ⏳ Pending  
+**API Connected:** ⏳ Pending
 
-2. **Deploy Frontend:**
-   - Use Vercel web UI OR
-   - Run: `DEPLOY_VERCEL_CLI.bat`
-   - Update API URL with Railway URL
-
-3. **Test:**
-   - Open frontend URL
-   - Submit test form
-   - Verify grants return
-
----
-
-## 🔗 URLS (To be filled)
-
-**Backend (Railway):** `https://[TBD].railway.app`  
-**Frontend (Vercel):** `https://[TBD].vercel.app`
+**Steps:**
+- [ ] Vercel project created
+- [ ] GitHub repo connected
+- [ ] Root directory: `CGU_HACKATHON_FRESH_BUILD/frontend`
+- [ ] Environment variable: `VITE_API_URL` = Railway URL
+- [ ] Deploy successful
+- [ ] URL obtained
+- [ ] Frontend loads
+- [ ] API URL updated in config.js
 
 ---
 
-**Status:** DEPLOYING NOW
+## ✅ INTEGRATION TEST
 
+**Status:** ⏳ PENDING  
+**End-to-End:** ⏳ Pending
+
+**Test:**
+- [ ] Open frontend URL
+- [ ] Fill out form
+- [ ] Submit
+- [ ] See 5 matching grants
+- [ ] Match scores display
+- [ ] No CORS errors
+- [ ] No API errors
+
+---
+
+## 🔗 URLS (Fill in as you deploy)
+
+**Backend (Railway):**  
+`https://________________.railway.app`
+
+**Frontend (Vercel):**  
+`https://________________.vercel.app`
+
+---
+
+## ⚠️ ISSUES ENCOUNTERED
+
+(Log any problems here)
+
+---
+
+**Update this as you progress!**
