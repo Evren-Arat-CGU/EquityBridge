@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free grant discovery for health and environmental equity organizations">
+    <title>EquityBridge - Grant Discovery for Health & Environmental Equity</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header -->
+    <header role="banner">
+        <div class="container">
+            <h1>EquityBridge</h1>
+            <p class="tagline">Funding access for health & environmental equity</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        <div class="container">
+            
+            <!-- Toggle between Form and AI Chat -->
+            <div class="mode-toggle" role="tablist" aria-label="Choose input method">
+                <button id="form-tab" class="tab-button active" role="tab" aria-selected="true" aria-controls="form-panel">Use Form</button>
+                <button id="chat-tab" class="tab-button" role="tab" aria-selected="false" aria-controls="chat-panel">Chat with AI</button>
+            </div>
+            
+            <!-- AI Chat Section (for Mind Studio embed) -->
+            <section id="chat-panel" class="tab-panel hidden" aria-labelledby="chat-heading" role="tabpanel" aria-hidden="true">
+                <h2 id="chat-heading">Chat with Our Grant Advisor</h2>
+                <p class="intro-text">Have a conversation with our AI assistant to find grants that match your organization's needs.</p>
+                <div id="mindstudio-embed" class="mindstudio-container">
+                    <!-- Mind Studio embed will be inserted here by Samantha -->
+                    <div class="placeholder-message">
+                        <p>Mind Studio AI agent will be embedded here.</p>
+                        <p class="note">Samantha is setting this up now!</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Organization Profile Form -->
+            <section id="form-panel" class="tab-panel" aria-labelledby="profile-heading" role="tabpanel" aria-hidden="false">
+                <h2 id="profile-heading">Find Grants for Your Organization</h2>
+                
+                <form id="profile-form" aria-label="Organization profile">
+                    
+                    <div class="form-group">
+                        <label for="org-name">Organization Name <span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="org-name" 
+                            name="name" 
+                            required
+                            aria-required="true"
+                            placeholder="Your organization name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="zip-code">Zip Code <span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="zip-code" 
+                            name="zip_code" 
+                            required
+                            aria-required="true"
+                            pattern="[0-9]{5}"
+                            placeholder="92501">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mission">Mission Statement <span class="required">*</span></label>
+                        <textarea 
+                            id="mission" 
+                            name="mission" 
+                            required
+                            aria-required="true"
+                            rows="3"
+                            placeholder="Describe your organization's mission..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="focus-area">Focus Area <span class="required">*</span></label>
+                        <select id="focus-area" name="focus_area" required aria-required="true">
+                            <option value="">Select focus area</option>
+                            <option value="health">Community Health</option>
+                            <option value="environment">Environmental Justice</option>
+                            <option value="both">Both Health & Environment</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="budget">Annual Budget <span class="required">*</span></label>
+                        <input 
+                            type="number" 
+                            id="budget" 
+                            name="annual_budget" 
+                            required
+                            aria-required="true"
+                            placeholder="250000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="staff-size">Staff Size <span class="required">*</span></label>
+                        <select id="staff-size" name="staff_size" required aria-required="true">
+                            <option value="">Select staff size</option>
+                            <option value="1-5">1-5 staff</option>
+                            <option value="6-20">6-20 staff</option>
+                            <option value="21-50">21-50 staff</option>
+                            <option value="50+">50+ staff</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Find Matching Grants</button>
+                </form>
+            </section>
+            
+            <!-- Results Section -->
+            <section id="results" aria-labelledby="results-heading" class="hidden">
+                <h2 id="results-heading">Your Grant Matches</h2>
+                <div id="results-content" role="region" aria-live="polite">
+                    <!-- Results will be inserted here by JavaScript -->
+                </div>
+            </section>
+            
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <div class="container">
+            <p>EquityBridge - Open Source Grant Discovery</p>
+            <p>CGU Hackathon 2025 - Theme: Health & Environmental Equity</p>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
