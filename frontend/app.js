@@ -142,8 +142,18 @@ if (document.readyState === 'loading') {
  * Exported for use by chat.js
  */
 window.displayResults = function displayResults(data) {
+    // Get elements if not already set
+    if (!resultsSection) resultsSection = document.getElementById('results');
+    if (!resultsContent) resultsContent = document.getElementById('results-content');
+    
+    if (!resultsSection || !resultsContent) {
+        console.error('Results elements not found');
+        return;
+    }
+    
     if (!data.grants || data.grants.length === 0) {
         resultsContent.innerHTML = '<p>No matching grants found. Try adjusting your criteria.</p>';
+        resultsSection.classList.remove('hidden');
         return;
     }
     
@@ -165,6 +175,8 @@ window.displayResults = function displayResults(data) {
         <p><strong>${data.matches_found} grant${data.matches_found === 1 ? '' : 's'} found for ${escapeHtml(data.organization)}</strong></p>
         ${grantsHTML}
     `;
+    
+    resultsSection.classList.remove('hidden');
     
     // Scroll to results
     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
