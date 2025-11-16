@@ -100,7 +100,12 @@ function setupFormHandlers() {
         const data = await response.json();
         
         // Display results
-        displayResults(data);
+        if (window.displayResults) {
+            window.displayResults(data);
+        } else {
+            // Fallback if function not available
+            console.error('displayResults function not found');
+        }
         
         // Initialize map if not already done
         if (window.initializeMap && !window.mapInitialized) {
@@ -108,14 +113,22 @@ function setupFormHandlers() {
             window.mapInitialized = true;
         }
         
-        // Highlight matching grants on map
-        if (window.highlightMatchingGrants && data.grants) {
-            window.highlightMatchingGrants(data.grants);
+        // Highlight matching grants on map (with delay)
+        if (data.grants && data.grants.length > 0) {
+            setTimeout(() => {
+                if (window.highlightMatchingGrants) {
+                    window.highlightMatchingGrants(data.grants);
+                }
+            }, 1000);
         }
         
         // Show user location
         if (window.showUserLocation && profile.zip_code) {
-            window.showUserLocation(profile.zip_code);
+            setTimeout(() => {
+                if (window.showUserLocation) {
+                    window.showUserLocation(profile.zip_code);
+                }
+            }, 1500);
         }
         
     } catch (error) {
