@@ -1,6 +1,6 @@
 /**
- * ArcGIS Map Integration
- * Loads LA County Grant Funding Distribution map
+ * ArcGIS Map Integration - EMERGENCY FIX
+ * Shows LA County grants and highlights matching grants
  */
 
 // ArcGIS Feature Service URL
@@ -9,9 +9,11 @@ const FEATURE_SERVICE_URL = "https://services.arcgis.com/hVnyNvwbpFFPDV5j/arcgis
 let map = null;
 let view = null;
 let mapInitialized = false;
+let featureLayer = null;
+let matchingGrantIds = [];
 
 /**
- * Initialize ArcGIS map using AMD require pattern
+ * Initialize ArcGIS map
  */
 function initializeMap() {
     if (mapInitialized) return;
@@ -19,19 +21,51 @@ function initializeMap() {
     require([
         "esri/Map",
         "esri/views/MapView",
-        "esri/layers/FeatureLayer"
-    ], function(Map, MapView, FeatureLayer) {
+        "esri/layers/FeatureLayer",
+        "esri/widgets/Popup"
+    ], function(Map, MapView, FeatureLayer, Popup) {
         try {
-            // Create map
+            // Create map with gray-vector basemap
             map = new Map({
-                basemap: "streets-navigation-vector"
+                basemap: "gray-vector"
             });
 
-            // Add Feature Layer
-            const featureLayer = new FeatureLayer({
+            // Add Feature Layer with popup
+            featureLayer = new FeatureLayer({
                 url: FEATURE_SERVICE_URL,
                 title: "LA County Grant Funding Distribution",
-                opacity: 0.8
+                opacity: 0.9,
+                popupTemplate: {
+                    title: "{Title}",
+                    content: [{
+                        type: "fields",
+                        fieldInfos: [{
+                            fieldName: "Funder",
+                            label: "Funder"
+                        }, {
+                            fieldName: "Amount",
+                            label: "Amount"
+                        }, {
+                            fieldName: "Deadline",
+                            label: "Deadline"
+                        }, {
+                            fieldName: "Focus_Area",
+                            label: "Focus Area"
+                        }]
+                    }]
+                },
+                renderer: {
+                    type: "simple",
+                    symbol: {
+                        type: "simple-marker",
+                        color: [0, 102, 204], // Blue for all grants
+                        size: 8,
+                        outline: {
+                            color: [255, 255, 255],
+                            width: 1
+                        }
+                    }
+                }
             });
 
             map.add(featureLayer);
@@ -46,8 +80,8 @@ function initializeMap() {
             view = new MapView({
                 container: "map-container",
                 map: map,
-                center: [-118.2437, 34.0522], // Los Angeles center
-                zoom: 10
+                center: [-118.2437, 34.0522], // LA County center
+                zoom: 9
             });
 
             mapInitialized = true;
@@ -65,11 +99,69 @@ function initializeMap() {
 }
 
 /**
+ * Highlight matching grants on the map
+ */
+function highlightMatchingGrants(grants) {
+    if (!view || !featureLayer || !mapInitialized) {
+        // Wait and try again
+        setTimeout(() => highlightMatchingGrants(grants), 500);
+        return;
+    }
+
+    require([
+        "esri/layers/FeatureLayer"
+    ], function(FeatureLayer) {
+        try {
+            // Extract grant IDs from results (assuming grant_id or title matching)
+            matchingGrantIds = grants.map(g => g.grant_id || g.title);
+            
+            // Update renderer to highlight matching grants
+            featureLayer.renderer = {
+                type: "unique-value",
+                field: "Title",
+                uniqueValueInfos: matchingGrantIds.map((id, index) => ({
+                    value: id,
+                    symbol: {
+                        type: "simple-marker",
+                        color: [46, 125, 50], // Green for matching grants
+                        size: 12,
+                        outline: {
+                            color: [255, 255, 255],
+                            width: 2
+                        }
+                    }
+                })),
+                defaultSymbol: {
+                    type: "simple-marker",
+                    color: [0, 102, 204], // Blue for non-matching
+                    size: 8,
+                    outline: {
+                        color: [255, 255, 255],
+                        width: 1
+                    }
+                }
+            };
+            
+            // Refresh the layer
+            featureLayer.refresh();
+            
+            console.log('[OK] Highlighted', matchingGrantIds.length, 'matching grants');
+            
+        } catch (error) {
+            console.error('Error highlighting grants:', error);
+            // Fallback: just refresh the layer
+            if (featureLayer) {
+                featureLayer.refresh();
+            }
+        }
+    });
+}
+
+/**
  * Show user location on map (from zip code)
  */
 function showUserLocation(zipCode) {
     if (!view || !mapInitialized) {
-        // Wait a bit and try again
         setTimeout(() => showUserLocation(zipCode), 500);
         return;
     }
@@ -101,11 +193,14 @@ function showUserLocation(zipCode) {
                 symbol: markerSymbol
             });
 
+            // Add user location (don't remove all graphics, keep grants)
             view.graphics.removeAll();
             view.graphics.add(userGraphic);
+            
+            // Keep zoom at 9 to show LA County
             view.goTo({
                 center: userPoint,
-                zoom: 12
+                zoom: 9
             });
 
         } catch (error) {
@@ -114,9 +209,8 @@ function showUserLocation(zipCode) {
     });
 }
 
-// Wait for ArcGIS API to load, then initialize
+// Initialize map when page loads
 window.addEventListener('load', function() {
-    // Wait a bit for ArcGIS API to be ready
     setTimeout(function() {
         if (typeof require !== 'undefined') {
             initializeMap();
@@ -126,7 +220,7 @@ window.addEventListener('load', function() {
     }, 1000);
 });
 
-// Export for use in app.js
+// Export functions
 window.initializeMap = initializeMap;
 window.showUserLocation = showUserLocation;
-
+window.highlightMatchingGrants = highlightMatchingGrants;

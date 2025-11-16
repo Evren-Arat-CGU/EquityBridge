@@ -326,6 +326,11 @@ function displayGrantResults(data) {
         window.mapInitialized = true;
     }
     
+    // Highlight matching grants on map
+    if (window.highlightMatchingGrants && data.grants) {
+        window.highlightMatchingGrants(data.grants);
+    }
+    
     if (window.showUserLocation && userData.zip_code) {
         window.showUserLocation(userData.zip_code);
     }

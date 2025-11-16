@@ -88,7 +88,18 @@ profileForm.addEventListener('submit', async (e) => {
         // Display results
         displayResults(data);
         
-        // Show map with user location
+        // Initialize map if not already done
+        if (window.initializeMap && !window.mapInitialized) {
+            window.initializeMap();
+            window.mapInitialized = true;
+        }
+        
+        // Highlight matching grants on map
+        if (window.highlightMatchingGrants && data.grants) {
+            window.highlightMatchingGrants(data.grants);
+        }
+        
+        // Show user location
         if (window.showUserLocation && profile.zip_code) {
             window.showUserLocation(profile.zip_code);
         }
