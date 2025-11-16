@@ -6,6 +6,9 @@
     <meta name="description" content="Free grant discovery for health and environmental equity organizations">
     <title>EquityBridge - Grant Discovery for Health & Environmental Equity</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- ArcGIS JavaScript API -->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.29/"></script>
 </head>
 <body>
     <!-- Skip to main content for accessibility -->
@@ -130,8 +133,18 @@
             <!-- Results Section -->
             <section id="results" aria-labelledby="results-heading" class="hidden">
                 <h2 id="results-heading">Your Grant Matches</h2>
-                <div id="results-content" role="region" aria-live="polite">
-                    <!-- Results will be inserted here by JavaScript -->
+                
+                <!-- Map and Results Container -->
+                <div class="results-container">
+                    <!-- Grant Results List -->
+                    <div id="results-content" class="results-list" role="region" aria-live="polite">
+                        <!-- Results will be inserted here by JavaScript -->
+                    </div>
+                    
+                    <!-- ArcGIS Map -->
+                    <div id="map-container" class="map-view" role="region" aria-label="Grant funding distribution map">
+                        <!-- Map will be initialized here by JavaScript -->
+                    </div>
                 </div>
             </section>
             
@@ -147,6 +160,7 @@
     </footer>
 
     <script src="config.js"></script>
+    <script src="map.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

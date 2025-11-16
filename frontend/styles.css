@@ -339,6 +339,36 @@ footer {
     margin-top: 60px;
 }
 
+/* ===== RESULTS CONTAINER ===== */
+.results-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.results-list {
+    min-height: 400px;
+}
+
+.map-view {
+    min-height: 500px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+}
+
+/* Responsive: Stack on mobile */
+@media (max-width: 968px) {
+    .results-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .map-view {
+        min-height: 400px;
+    }
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     header h1 {

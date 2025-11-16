@@ -62,6 +62,12 @@ profileForm.addEventListener('submit', async (e) => {
     resultsSection.classList.remove('hidden');
     resultsContent.innerHTML = '<div class="loading">Finding matching grants...</div>';
     
+    // Initialize map if not already done
+    if (window.initializeMap && !window.mapInitialized) {
+        window.initializeMap();
+        window.mapInitialized = true;
+    }
+    
     try {
         // Call backend API
         const response = await fetch(`${API_URL}/api/match-grants`, {
@@ -80,6 +86,11 @@ profileForm.addEventListener('submit', async (e) => {
         
         // Display results
         displayResults(data);
+        
+        // Show map with user location
+        if (window.showUserLocation && profile.zip_code) {
+            window.showUserLocation(profile.zip_code);
+        }
         
     } catch (error) {
         console.error('Error:', error);
