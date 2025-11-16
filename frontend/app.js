@@ -106,8 +106,9 @@ profileForm.addEventListener('submit', async (e) => {
 
 /**
  * Display grant matching results
+ * Exported for use by chat.js
  */
-function displayResults(data) {
+window.displayResults = function displayResults(data) {
     if (!data.grants || data.grants.length === 0) {
         resultsContent.innerHTML = '<p>No matching grants found. Try adjusting your criteria.</p>';
         return;
@@ -134,7 +135,7 @@ function displayResults(data) {
     
     // Scroll to results
     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+};
 
 /**
  * Escape HTML to prevent XSS

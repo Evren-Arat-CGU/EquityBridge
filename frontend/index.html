@@ -6,6 +6,7 @@
     <meta name="description" content="Free grant discovery for health and environmental equity organizations">
     <title>EquityBridge - Grant Discovery for Health & Environmental Equity</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="chat.css">
     <!-- ArcGIS JavaScript API -->
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
     <script src="https://js.arcgis.com/4.29/"></script>
@@ -45,16 +46,17 @@
             <section id="chat-panel" class="tab-panel" aria-labelledby="chat-heading" role="tabpanel" aria-hidden="false">
                 <h2 id="chat-heading">Chat with Our Grant Advisor</h2>
                 <p class="intro-text">Have a conversation with our AI assistant to find grants that match your organization's needs. Simply tell us about your organization and we'll find the perfect grants for you.</p>
-                <div id="mindstudio-embed" class="mindstudio-container">
-                    <!-- Mind Studio AI Agent Embed -->
-                    <iframe 
-                        src="https://mindstudio.ai/embed/2701765f-ff7f-4445-b6c8-dd2f96b1b872" 
-                        width="100%" 
-                        height="600" 
-                        frameborder="0"
-                        title="Grant Advisor AI Chat"
-                        allow="microphone; camera">
-                    </iframe>
+                <div id="chat-container" class="chat-container">
+                    <div id="chat-messages" role="log" aria-live="polite" aria-label="Chat messages"></div>
+                    <div id="chat-input-container">
+                        <input 
+                            type="text" 
+                            id="chat-input" 
+                            placeholder="Type your message here..."
+                            aria-label="Chat input"
+                            autocomplete="off">
+                        <button id="chat-send" aria-label="Send message">Send</button>
+                    </div>
                 </div>
             </section>
             
@@ -165,6 +167,7 @@
 
     <script src="config.js"></script>
     <script src="map.js"></script>
+    <script src="chat.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
