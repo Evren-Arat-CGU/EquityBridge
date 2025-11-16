@@ -281,11 +281,19 @@ button:focus,
 
 /* ===== MIND STUDIO CONTAINER ===== */
 .mindstudio-container {
+    width: 100%;
     min-height: 600px;
     border: 2px solid var(--border);
     border-radius: 8px;
-    padding: 20px;
+    overflow: hidden;
     background: var(--surface);
+}
+
+.mindstudio-container iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
+    display: block;
 }
 
 .placeholder-message {
