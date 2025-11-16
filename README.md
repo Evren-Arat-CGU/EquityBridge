@@ -1,103 +1,75 @@
-# EquityBridge - CGU Hackathon Build
-**Fresh Build - November 15, 2025**  
-**Team:** Evren, Samantha, Toni, Albert  
-**Demo Time:** 3:00 PM  
-**Theme:** Health & Environmental Equity
+# EquityBridge - Grant Discovery Platform
+
+**CGU Hackathon 2025 - Health & Environmental Equity Theme**
 
 ---
 
-## Project Structure
+## 🚀 QUICK START
+
+**Live Application:**
+- Frontend: https://equity-bridge.vercel.app/
+- Backend: https://ideal-flow-production-2795.up.railway.app/
+
+---
+
+## 📋 IMPORTANT DOCUMENTS
+
+### 🌟 **NORTH STAR IMPLEMENTATION DOCUMENT**
+**👉 READ THIS FIRST:** [`NORTH_STAR_IMPLEMENTATION.md`](./NORTH_STAR_IMPLEMENTATION.md)
+
+This is the **single source of truth** for project status, changes, and coordination.
+
+### Other Key Documents:
+- [`READY_FOR_LIVE_TESTING.md`](./READY_FOR_LIVE_TESTING.md) - Testing checklist
+- [`FINAL_STATUS.md`](./FINAL_STATUS.md) - Current status summary
+- [`ARCGIS_STORYMAP_GUIDE.md`](./ARCGIS_STORYMAP_GUIDE.md) - StoryMap creation guide
+
+---
+
+## 🎯 PROJECT STATUS
+
+**Status:** ✅ 95% Complete - Ready for Live Testing
+
+**Completed:**
+- ✅ Backend deployed (Railway)
+- ✅ Frontend deployed (Vercel)
+- ✅ Mind Studio AI agent integrated
+- ✅ ArcGIS map integrated
+- ✅ Database with 21 grants
+- ✅ Grant matching algorithm
+
+**Remaining:**
+- ⏳ Live end-to-end testing
+- ⏳ ArcGIS StoryMap creation (for presentation)
+
+---
+
+## 📁 PROJECT STRUCTURE
 
 ```
 CGU_HACKATHON_FRESH_BUILD/
-├── backend/               # FastAPI backend
-│   ├── main.py           # API endpoints
-│   ├── database.py       # Data storage
-│   └── requirements.txt  # Python dependencies
-├── frontend/             # Web interface
+├── backend/              # FastAPI backend
+│   ├── main.py          # API endpoints
+│   ├── database.py      # Database setup
+│   └── equitybridge.db  # SQLite database
+├── frontend/            # HTML/CSS/JS frontend
 │   ├── index.html       # Main page
-│   ├── styles.css       # Styling (accessible)
-│   └── app.js           # Frontend logic
-├── data/                # Data collection scripts
-│   ├── scrape_990s.py   # Nonprofit data
-│   └── scrape_grants.py # Grant data
-└── docs/                # Documentation
-    └── DEMO_SCRIPT.md   # Presentation notes
+│   ├── app.js           # Frontend logic
+│   ├── map.js           # ArcGIS map integration
+│   └── styles.css       # Styling
+├── NORTH_STAR_IMPLEMENTATION.md  # ⭐ MAIN STATUS DOCUMENT
+└── README.md            # This file
 ```
 
 ---
 
-## Tech Stack
+## 🔗 LINKS
 
-- **Backend:** FastAPI (Python)
-- **Database:** SQLite
-- **Frontend:** HTML/CSS/JavaScript (accessible, WCAG 2.1 AA)
-- **AI:** Mind Studio (agentic grant matching)
-- **Mapping:** ArcGIS StoryMaps
-- **Deploy:** Vercel (frontend) + Railway (backend)
+- **GitHub:** https://github.com/Evren-Arat-CGU/EquityBridge
+- **Frontend:** https://equity-bridge.vercel.app/
+- **Backend:** https://ideal-flow-production-2795.up.railway.app/
+- **Mind Studio Agent ID:** `2701765f-ff7f-4445-b6c8-dd2f96b1b872`
 
 ---
 
-## Getting Started
-
-### 1. Backend Setup
-```bash
-cd backend
-pip install -r requirements.txt
-python main.py
-```
-
-### 2. Data Collection
-```bash
-cd data
-python scrape_990s.py
-python scrape_grants.py
-```
-
-### 3. Frontend
-Open `frontend/index.html` in browser (or use live server)
-
----
-
-## Key Features to Build
-
-1. **Geographic Grant Matching**
-   - User inputs org profile (location, mission, budget)
-   - AI matches relevant grants
-   - Returns top 5 with explanations
-
-2. **Accessibility First**
-   - WCAG 2.1 AA compliance
-   - Keyboard navigation
-   - Screen reader compatible
-   - High contrast colors
-
-3. **ArcGIS Integration**
-   - Embed tool in StoryMap
-   - Show funding desert visualization
-   - Interactive demo
-
----
-
-## Timeline
-
-- **Hour 1 (10:00-11:00):** Backend + data collection
-- **Hour 2 (11:00-12:00):** Frontend + Mind Studio setup
-- **Hour 3 (12:00-1:00):** Integration + ArcGIS StoryMap
-- **Hour 4 (1:00-2:00):** Testing + accessibility
-- **Hour 5 (2:00-3:00):** Demo prep + presentation
-
----
-
-## Critical Rules
-
-✅ **All code written from scratch during hackathon**  
-✅ **Only open-source libraries**  
-✅ **No proprietary IP from other projects**  
-✅ **Clean git commit history**  
-
----
-
-## Contact
-
-Team coordination: [decide - Slack/Discord/Text]
+**For detailed status and coordination, see [`NORTH_STAR_IMPLEMENTATION.md`](./NORTH_STAR_IMPLEMENTATION.md)**
