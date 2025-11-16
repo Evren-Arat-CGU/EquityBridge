@@ -1,128 +1,119 @@
-# 🚨 START DEPLOYMENT NOW
+# 🚨 START DEPLOYMENT NOW - 3 HOURS TO DEMO
 
-**Time:** 3:00 PM  
-**Demo:** 6:00 PM  
+**Current Time:** 3:00 PM  
+**Demo Time:** 6:00 PM  
 **Status:** READY TO DEPLOY
 
 ---
 
 ## ✅ PRE-DEPLOYMENT CHECKLIST
 
-- ✅ Backend code complete (FastAPI, 21 grants)
-- ✅ Frontend code complete (HTML/CSS/JS)
-- ✅ Railway config (`railway.json`) ready
-- ✅ Vercel config (`vercel.json`) ready
-- ✅ All code pushed to GitHub
-- ✅ Deployment scripts created
+All deployment configs are ready:
+- ✅ Railway config (`railway.json`, `Procfile`) - Ready
+- ✅ Vercel config (`vercel.json`) - Ready
+- ✅ Backend CORS configured - Ready
+- ✅ Frontend API URL configurable - Ready
+- ✅ All files pushed to GitHub - Ready
 
 ---
 
-## 🚀 DEPLOYMENT STEPS (30 MINUTES TOTAL)
+## 🚀 DEPLOYMENT INSTRUCTIONS
 
-### 1️⃣ BACKEND → RAILWAY (10 min)
+### **OPTION 1: Use the Quick Checklist (RECOMMENDED)**
+Open: **`QUICK_DEPLOY_CHECKLIST.md`** - Follow step-by-step
 
-**URL:** https://railway.app/new
-
-**Steps:**
-1. Click "Deploy from GitHub repo"
-2. Connect GitHub if needed (authorize, select repos)
-3. Select: `Evren-Arat-CGU/EquityBridge`
-4. Click "Deploy" (Railway auto-detects config)
-5. Wait 2-3 minutes
-6. Get URL: Settings → Networking → Generate Domain
-7. Test: Open URL → Should see `{"status":"healthy"}`
-
-**✅ Backend URL:** `https://[SAVE-THIS-URL].railway.app`
+### **OPTION 2: Use the Detailed Guide**
+Open: **`EMERGENCY_DEPLOY_NOW.md`** - Complete instructions
 
 ---
 
-### 2️⃣ FRONTEND → VERCEL (10 min)
+## ⚡ FASTEST PATH (30 minutes)
 
-**URL:** https://vercel.com/new
+### 1. BACKEND → RAILWAY (15 min)
 
-**Steps:**
-1. Click "Import Git Repository"
-2. Connect GitHub if needed
-3. Select: `Evren-Arat-CGU/EquityBridge`
-4. **IMPORTANT:** Click "Edit" next to Root Directory
-5. Set Root Directory to: `CGU_HACKATHON_FRESH_BUILD/frontend`
-6. Framework: "Other"
-7. Click "Deploy"
-8. Wait 1-2 minutes
-9. Get URL from Vercel dashboard
+1. Go to: https://railway.app
+2. Login (email or GitHub)
+3. Click **"New Project"** → **"Deploy from GitHub repo"**
+4. If GitHub not connected: Settings → Connected Accounts → Connect GitHub
+5. Select: **Evren-Arat-CGU/EquityBridge**
+6. Railway auto-detects config ✅
+7. Wait 2-3 minutes for build
+8. **COPY BACKEND URL:** `https://________________.railway.app`
+9. Test: Open URL in browser → Should see `{"status":"healthy"}`
 
-**✅ Frontend URL:** `https://[SAVE-THIS-URL].vercel.app`
+**✅ BACKEND URL:** `https://________________.railway.app`
 
 ---
 
-### 3️⃣ UPDATE API URL (5 min)
+### 2. FRONTEND → VERCEL (15 min)
 
-**After you have Railway URL:**
+1. Go to: https://vercel.com
+2. Login (email or GitHub)
+3. Click **"Add New..."** → **"Project"**
+4. Select **"Import Git Repository"**
+5. If GitHub not connected: Settings → Git → Connect GitHub
+6. Select: **Evren-Arat-CGU/EquityBridge**
+7. **IMPORTANT:** Set **Root Directory** to: `CGU_HACKATHON_FRESH_BUILD/frontend`
+8. Framework: **Other** (or auto-detect)
+9. Click **"Deploy"**
+10. Wait 1-2 minutes
+11. **COPY FRONTEND URL:** `https://________________.vercel.app`
 
-**Option A: Use script**
-```bash
-UPDATE_API_URL.bat
-# Enter Railway URL when prompted
-git add frontend/config.js
-git commit -m "Update API URL for production"
-git push
-```
+**✅ FRONTEND URL:** `https://________________.vercel.app`
 
-**Option B: Manual**
-1. Edit `frontend/config.js`
-2. Change line 3 to:
+---
+
+### 3. CONNECT FRONTEND TO BACKEND (5 min)
+
+1. Edit `frontend/config.js`:
    ```javascript
-   window.API_URL = 'https://[YOUR-RAILWAY-URL].railway.app';
+   window.API_URL = 'https://[your-railway-url].railway.app';
    ```
-3. Save, commit, push
-4. Vercel auto-redeploys
+2. Commit and push:
+   ```bash
+   git add frontend/config.js
+   git commit -m "Update API URL for production"
+   git push
+   ```
+3. Vercel auto-redeploys (1-2 minutes)
 
 ---
 
-### 4️⃣ TEST (5 min)
+### 4. TEST END-TO-END (10 min)
 
-1. Open frontend URL
+1. Open frontend URL: `https://[vercel-url].vercel.app`
 2. Fill form:
    - Name: "Riverside Community Health Clinic"
    - Zip: "92501"
-   - Mission: "Primary care for underserved"
+   - Mission: "Providing primary care to underserved families"
    - Focus: "Community Health"
    - Budget: "250000"
    - Staff: "6-20 staff"
-3. Submit → Should see 5 grants
-4. Check console (F12) for errors
+3. Click "Find Matching Grants"
+4. **Verify:** See 5 matching grants with scores
+
+**If CORS Error:**
+- Railway → Variables → Set `CORS_ORIGINS` = `https://[vercel-url].vercel.app`
+- Redeploy backend
 
 ---
 
-## 🆘 IF CORS ERROR
+## 📋 REPORT BACK
 
-**Railway Dashboard:**
-1. Your service → Variables
-2. Add: `CORS_ORIGINS` = `https://[YOUR-VERCEL-URL].vercel.app`
-3. Backend auto-redeploys
-
----
-
-## 📋 FINAL REPORT
-
-After deployment, report:
-
-**Backend URL:** `https://[URL].railway.app`  
-**Frontend URL:** `https://[URL].vercel.app`  
-**Status:** ✅ Working / ❌ Errors
+When done, report:
+- **Backend URL:** `https://________________.railway.app`
+- **Frontend URL:** `https://________________.vercel.app`
+- **Status:** ✅ Working / ⚠️ Issues
 
 ---
 
-## 🎯 TIMELINE
+## 🆘 IF STUCK
 
-- **3:00 PM:** Start deployment
-- **3:10 PM:** Backend deployed
-- **3:20 PM:** Frontend deployed
-- **3:25 PM:** API URL updated
-- **3:30 PM:** Testing complete
-- **3:35 PM:** Ready for demo! 🎉
+1. Check `EMERGENCY_DEPLOY_NOW.md` for detailed troubleshooting
+2. Check Railway/Vercel logs for errors
+3. Verify GitHub repo is accessible
+4. Test backend directly: `https://[railway-url]/api/match-grants`
 
 ---
 
 **START NOW!** 🚀
-

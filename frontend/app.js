@@ -79,7 +79,8 @@ profileForm.addEventListener('submit', async (e) => {
         });
         
         if (!response.ok) {
-            throw new Error('Failed to fetch grants');
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch grants: ${response.status} ${errorText}`);
         }
         
         const data = await response.json();

@@ -8,16 +8,17 @@
 
 ## ✅ BACKEND (Railway)
 
-**Status:** ⏳ IN PROGRESS  
-**URL:** `https://________________.railway.app`  
-**Health Check:** ⏳ Pending  
+**Status:** ✅ DEPLOYED  
+**Railway Project:** https://railway.com/project/09d009eb-3a3a-4411-92eb-3a00c323e436  
+**URL:** `https://ideal-flow-production-2795.up.railway.app` ✅  
+**Health Check:** ⏳ Testing  
 **API Test:** ⏳ Pending
 
 **Steps:**
-- [ ] Railway project created
-- [ ] GitHub repo connected
-- [ ] Build successful
-- [ ] URL obtained
+- [x] Railway project created ✅
+- [x] GitHub repo connected ✅
+- [x] Build successful ✅
+- [x] URL obtained ✅
 - [ ] Health check: `/` returns `{"status":"healthy"}`
 - [ ] API test: `/api/match-grants` works
 
@@ -25,20 +26,19 @@
 
 ## ✅ FRONTEND (Vercel)
 
-**Status:** ⏳ PENDING  
-**URL:** `https://________________.vercel.app`  
-**Loads:** ⏳ Pending  
-**API Connected:** ⏳ Pending
+**Status:** ✅ DEPLOYED  
+**URL:** `https://equity-bridge.vercel.app/` ✅  
+**Loads:** ✅ Yes  
+**API Connected:** ⏳ Testing
 
 **Steps:**
-- [ ] Vercel project created
-- [ ] GitHub repo connected
-- [ ] Root directory: `CGU_HACKATHON_FRESH_BUILD/frontend`
-- [ ] Environment variable: `VITE_API_URL` = Railway URL
-- [ ] Deploy successful
-- [ ] URL obtained
-- [ ] Frontend loads
-- [ ] API URL updated in config.js
+- [x] Vercel project created ✅
+- [x] GitHub repo connected ✅
+- [x] Root directory: `frontend` ✅
+- [x] Deploy successful ✅
+- [x] URL obtained ✅
+- [x] Frontend loads ✅
+- [x] API URL updated in config.js ✅
 
 ---
 
@@ -61,10 +61,10 @@
 ## 🔗 URLS (Fill in as you deploy)
 
 **Backend (Railway):**  
-`https://________________.railway.app`
+`https://ideal-flow-production-2795.up.railway.app` ✅
 
 **Frontend (Vercel):**  
-`https://________________.vercel.app`
+`https://equity-bridge.vercel.app/` ✅
 
 ---
 
