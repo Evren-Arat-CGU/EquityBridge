@@ -6,7 +6,7 @@
 // API endpoint (update when backend is deployed)
 // For production: Update this URL to your Railway backend URL
 // Or set via window.API_URL if injected by build process
-const API_URL = window.API_URL || 'http://localhost:8000';
+const API_URL = window.API_URL || 'https://ideal-flow-production-2795.up.railway.app';
 
 // Wait for DOM to be ready
 let profileForm, resultsSection, resultsContent, formTab, chatTab, formPanel, chatPanel;
@@ -23,8 +23,16 @@ function initForm() {
     formPanel = document.getElementById('form-panel');
     chatPanel = document.getElementById('chat-panel');
     
-    if (!profileForm || !formTab || !chatTab) {
-        console.error('Form elements not found');
+    if (!profileForm) {
+        console.error('Form not found:', profileForm);
+        return;
+    }
+    if (!formTab || !chatTab) {
+        console.error('Tabs not found:', { formTab, chatTab });
+        return;
+    }
+    if (!resultsSection || !resultsContent) {
+        console.error('Results elements not found:', { resultsSection, resultsContent });
         return;
     }
     
@@ -58,7 +66,8 @@ function setupFormHandlers() {
 
     // Handle form submission
     profileForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+        e.preventDefault();
+        console.log('Form submitted!');
     
     // Get form data
     const formData = new FormData(profileForm);
@@ -71,6 +80,9 @@ function setupFormHandlers() {
         annual_budget: parseInt(formData.get('annual_budget')),
         staff_size: formData.get('staff_size')
     };
+    
+    console.log('Submitting profile:', profile);
+    console.log('API URL:', API_URL);
     
     // Show loading state
     resultsSection.classList.remove('hidden');
