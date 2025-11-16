@@ -14,7 +14,8 @@
 - ✅ Backend deployed: `https://ideal-flow-production-2795.up.railway.app`
 - ✅ Frontend deployed: `https://equity-bridge.vercel.app/`
 - ⏳ Waiting for Mind Studio embed code from Samantha
-- ❌ ArcGIS map integration not started
+- ⚠️ ArcGIS map data ready (`arcgis_grants_la_county.csv` with 22 grants + coordinates)
+- ❌ ArcGIS map not embedded in frontend yet (need embed code or build from CSV)
 - ❌ ArcGIS StoryMap not created
 **Last Updated:** 4:00 PM
 

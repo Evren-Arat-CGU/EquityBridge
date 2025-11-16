@@ -45,16 +45,18 @@
 ## ❌ NOT STARTED / PENDING
 
 ### 1. ArcGIS Map in Application
-- ❌ **NOT INTEGRATED** - No map in the frontend yet
-- ❌ **Status:** Not started
+- ⚠️ **DATA READY** - `arcgis_grants_la_county.csv` exists with 22 grants + coordinates
+- ❌ **NOT INTEGRATED** - Map not embedded in frontend yet
+- **What we have:**
+  - CSV file with LA County grants (lat/long coordinates)
+  - 22 grants ready for mapping
 - **What's needed:**
-  - Add ArcGIS JavaScript API
-  - Create map container in HTML
+  - ArcGIS map embed code (if map already created in ArcGIS Online)
+  - OR build map from CSV data using ArcGIS JavaScript API
   - Show user location (from zip code)
   - Visualize funding deserts
-  - Show grant availability by region
-- **Time needed:** ~30-45 minutes
-- **Options:** Map alongside results, separate tab, or on results page
+  - Show grant locations on map
+- **Time needed:** ~30-45 minutes (if building from CSV) or 5 minutes (if embed code)
 
 ### 2. ArcGIS StoryMap (Presentation)
 - ❌ **NOT CREATED** - For demo/presentation
