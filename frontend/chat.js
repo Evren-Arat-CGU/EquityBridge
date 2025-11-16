@@ -165,8 +165,9 @@ function handleUserInput() {
     // Move to next step
     currentStep++;
     
-    // Check if we need confirmation
+    // Check if we need confirmation (after all 5 questions)
     if (currentStep >= conversation.length) {
+        // All questions answered, show confirmation
         showConfirmation();
     } else {
         // Show next question
@@ -217,6 +218,8 @@ Does this look correct? (Type 'yes' to continue or 'no' to start over)`;
     
     const confirmHandler = () => {
         const response = chatInput.value.trim().toLowerCase();
+        chatInput.value = ''; // Clear input
+        
         if (response === 'yes' || response === 'y') {
             chatInput.removeEventListener('keypress', confirmKeyHandler);
             chatSend.removeEventListener('click', confirmHandler);
@@ -225,9 +228,8 @@ Does this look correct? (Type 'yes' to continue or 'no' to start over)`;
             chatInput.removeEventListener('keypress', confirmKeyHandler);
             chatSend.removeEventListener('click', confirmHandler);
             resetChat();
-        } else {
+        } else if (response.length > 0) {
             addBotMessage("Please type 'yes' to continue or 'no' to start over.");
-            chatInput.value = '';
         }
     };
     
@@ -315,6 +317,12 @@ function displayGrantResults(data) {
     
     addBotMessage(resultsText);
     
+    // Show results section
+    const resultsSection = document.getElementById('results');
+    if (resultsSection) {
+        resultsSection.classList.remove('hidden');
+    }
+    
     // Also trigger the results display in the main app
     if (window.displayResults) {
         window.displayResults(data);
@@ -322,17 +330,30 @@ function displayGrantResults(data) {
     
     // Initialize map if available
     if (window.initializeMap && !window.mapInitialized) {
-        window.initializeMap();
-        window.mapInitialized = true;
+        setTimeout(() => {
+            if (window.initializeMap) {
+                window.initializeMap();
+                window.mapInitialized = true;
+            }
+        }, 500);
     }
     
-    // Highlight matching grants on map
-    if (window.highlightMatchingGrants && data.grants) {
-        window.highlightMatchingGrants(data.grants);
+    // Highlight matching grants on map (wait for map to initialize)
+    if (data.grants && data.grants.length > 0) {
+        setTimeout(() => {
+            if (window.highlightMatchingGrants) {
+                window.highlightMatchingGrants(data.grants);
+            }
+        }, 1000);
     }
     
+    // Show user location
     if (window.showUserLocation && userData.zip_code) {
-        window.showUserLocation(userData.zip_code);
+        setTimeout(() => {
+            if (window.showUserLocation) {
+                window.showUserLocation(userData.zip_code);
+            }
+        }, 1500);
     }
 }
 
