@@ -1,14 +1,8 @@
 {
   "version": 2,
   "buildCommand": "",
-  "outputDirectory": "frontend",
+  "outputDirectory": ".",
   "framework": null,
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
