@@ -28,16 +28,20 @@
     <main id="main-content" role="main">
         <div class="container">
             
-            <!-- Toggle between Form and AI Chat -->
+            <!-- Toggle between AI Chat and Form (AI-first approach) -->
             <div class="mode-toggle" role="tablist" aria-label="Choose input method">
-                <button id="form-tab" class="tab-button active" role="tab" aria-selected="true" aria-controls="form-panel">Use Form</button>
-                <button id="chat-tab" class="tab-button" role="tab" aria-selected="false" aria-controls="chat-panel">Chat with AI</button>
+                <button id="chat-tab" class="tab-button active" role="tab" aria-selected="true" aria-controls="chat-panel">
+                    <span class="tab-icon">🤖</span> Chat with AI
+                </button>
+                <button id="form-tab" class="tab-button" role="tab" aria-selected="false" aria-controls="form-panel">
+                    <span class="tab-icon">📝</span> Use Form Instead
+                </button>
             </div>
             
-            <!-- AI Chat Section (for Mind Studio embed) -->
-            <section id="chat-panel" class="tab-panel hidden" aria-labelledby="chat-heading" role="tabpanel" aria-hidden="true">
+            <!-- AI Chat Section (for Mind Studio embed) - PRIMARY METHOD -->
+            <section id="chat-panel" class="tab-panel" aria-labelledby="chat-heading" role="tabpanel" aria-hidden="false">
                 <h2 id="chat-heading">Chat with Our Grant Advisor</h2>
-                <p class="intro-text">Have a conversation with our AI assistant to find grants that match your organization's needs.</p>
+                <p class="intro-text">Have a conversation with our AI assistant to find grants that match your organization's needs. Simply tell us about your organization and we'll find the perfect grants for you.</p>
                 <div id="mindstudio-embed" class="mindstudio-container">
                     <!-- Mind Studio embed will be inserted here by Samantha -->
                     <div class="placeholder-message">
@@ -47,8 +51,8 @@
                 </div>
             </section>
             
-            <!-- Organization Profile Form -->
-            <section id="form-panel" class="tab-panel" aria-labelledby="profile-heading" role="tabpanel" aria-hidden="false">
+            <!-- Organization Profile Form - SECONDARY METHOD -->
+            <section id="form-panel" class="tab-panel hidden" aria-labelledby="profile-heading" role="tabpanel" aria-hidden="true">
                 <h2 id="profile-heading">Find Grants for Your Organization</h2>
                 
                 <form id="profile-form" aria-label="Organization profile">

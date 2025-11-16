@@ -13,24 +13,13 @@ const profileForm = document.getElementById('profile-form');
 const resultsSection = document.getElementById('results');
 const resultsContent = document.getElementById('results-content');
 
-// Tab switching for Form/AI Chat
+// Tab switching for AI Chat/Form (AI-first approach)
 const formTab = document.getElementById('form-tab');
 const chatTab = document.getElementById('chat-tab');
 const formPanel = document.getElementById('form-panel');
 const chatPanel = document.getElementById('chat-panel');
 
-// Handle tab switching
-formTab.addEventListener('click', () => {
-    formTab.classList.add('active');
-    formTab.setAttribute('aria-selected', 'true');
-    chatTab.classList.remove('active');
-    chatTab.setAttribute('aria-selected', 'false');
-    formPanel.classList.remove('hidden');
-    formPanel.setAttribute('aria-hidden', 'false');
-    chatPanel.classList.add('hidden');
-    chatPanel.setAttribute('aria-hidden', 'true');
-});
-
+// Handle tab switching - AI Chat is default/primary
 chatTab.addEventListener('click', () => {
     chatTab.classList.add('active');
     chatTab.setAttribute('aria-selected', 'true');
@@ -40,6 +29,17 @@ chatTab.addEventListener('click', () => {
     chatPanel.setAttribute('aria-hidden', 'false');
     formPanel.classList.add('hidden');
     formPanel.setAttribute('aria-hidden', 'true');
+});
+
+formTab.addEventListener('click', () => {
+    formTab.classList.add('active');
+    formTab.setAttribute('aria-selected', 'true');
+    chatTab.classList.remove('active');
+    chatTab.setAttribute('aria-selected', 'false');
+    formPanel.classList.remove('hidden');
+    formPanel.setAttribute('aria-hidden', 'false');
+    chatPanel.classList.add('hidden');
+    chatPanel.setAttribute('aria-hidden', 'true');
 });
 
 // Handle form submission

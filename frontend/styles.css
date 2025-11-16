@@ -221,7 +221,7 @@ button:focus,
     font-size: 0.9rem;
 }
 
-/* ===== TAB SWITCHING ===== */
+/* ===== TAB SWITCHING (AI-FIRST APPROACH) ===== */
 .mode-toggle {
     display: flex;
     gap: 10px;
@@ -240,6 +240,9 @@ button:focus,
     border-bottom: 3px solid transparent;
     transition: all 0.2s;
     min-height: 44px; /* WCAG touch target */
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .tab-button:hover {
@@ -250,6 +253,17 @@ button:focus,
 .tab-button.active {
     color: var(--primary-color);
     border-bottom-color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* Emphasize AI tab as primary */
+#chat-tab.active {
+    border-bottom-width: 4px;
+    font-size: 1.05rem;
+}
+
+.tab-icon {
+    font-size: 1.2em;
 }
 
 .tab-button:focus {
