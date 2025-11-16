@@ -8,19 +8,33 @@
 // Or set via window.API_URL if injected by build process
 const API_URL = window.API_URL || 'http://localhost:8000';
 
-// Get form and results elements
-const profileForm = document.getElementById('profile-form');
-const resultsSection = document.getElementById('results');
-const resultsContent = document.getElementById('results-content');
+// Wait for DOM to be ready
+let profileForm, resultsSection, resultsContent, formTab, chatTab, formPanel, chatPanel;
 
-// Tab switching for AI Chat/Form (AI-first approach)
-const formTab = document.getElementById('form-tab');
-const chatTab = document.getElementById('chat-tab');
-const formPanel = document.getElementById('form-panel');
-const chatPanel = document.getElementById('chat-panel');
+function initForm() {
+    // Get form and results elements
+    profileForm = document.getElementById('profile-form');
+    resultsSection = document.getElementById('results');
+    resultsContent = document.getElementById('results-content');
 
-// Handle tab switching - AI Chat is default/primary
-chatTab.addEventListener('click', () => {
+    // Tab switching for AI Chat/Form (AI-first approach)
+    formTab = document.getElementById('form-tab');
+    chatTab = document.getElementById('chat-tab');
+    formPanel = document.getElementById('form-panel');
+    chatPanel = document.getElementById('chat-panel');
+    
+    if (!profileForm || !formTab || !chatTab) {
+        console.error('Form elements not found');
+        return;
+    }
+    
+    setupFormHandlers();
+}
+
+function setupFormHandlers() {
+
+    // Handle tab switching - AI Chat is default/primary
+    chatTab.addEventListener('click', () => {
     chatTab.classList.add('active');
     chatTab.setAttribute('aria-selected', 'true');
     formTab.classList.remove('active');
@@ -31,19 +45,19 @@ chatTab.addEventListener('click', () => {
     formPanel.setAttribute('aria-hidden', 'true');
 });
 
-formTab.addEventListener('click', () => {
-    formTab.classList.add('active');
-    formTab.setAttribute('aria-selected', 'true');
-    chatTab.classList.remove('active');
-    chatTab.setAttribute('aria-selected', 'false');
-    formPanel.classList.remove('hidden');
-    formPanel.setAttribute('aria-hidden', 'false');
-    chatPanel.classList.add('hidden');
-    chatPanel.setAttribute('aria-hidden', 'true');
-});
+    formTab.addEventListener('click', () => {
+        formTab.classList.add('active');
+        formTab.setAttribute('aria-selected', 'true');
+        chatTab.classList.remove('active');
+        chatTab.setAttribute('aria-selected', 'false');
+        formPanel.classList.remove('hidden');
+        formPanel.setAttribute('aria-hidden', 'false');
+        chatPanel.classList.add('hidden');
+        chatPanel.setAttribute('aria-hidden', 'true');
+    });
 
-// Handle form submission
-profileForm.addEventListener('submit', async (e) => {
+    // Handle form submission
+    profileForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     // Get form data
@@ -113,7 +127,15 @@ profileForm.addEventListener('submit', async (e) => {
             </div>
         `;
     }
-});
+    });
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initForm);
+} else {
+    initForm();
+}
 
 /**
  * Display grant matching results
