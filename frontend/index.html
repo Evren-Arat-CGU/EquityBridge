@@ -3,171 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free grant discovery for health and environmental equity organizations">
-    <title>EquityBridge - Grant Discovery for Health & Environmental Equity</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="chat.css">
-    <!-- ArcGIS JavaScript API -->
-    <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
-    <script src="https://js.arcgis.com/4.28/"></script>
+    <title>EquityBridge - Grant Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+        .error {
+            background: #fee;
+            border: 2px solid #fcc;
+            color: #c33;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .results {
+            margin-top: 40px;
+        }
+        .results h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .grant-card {
+            background: #f8f9ff;
+            border: 2px solid #e0e7ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .grant-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .grant-card .funder {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .grant-card .amount {
+            background: #667eea;
+            color: white;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .grant-card .score {
+            background: #4ade80;
+            color: white;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .grant-card .description {
+            color: #666;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+        .grant-card .match-reason {
+            color: #667eea;
+            background: #f0f4ff;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+        .grant-card .eligibility {
+            color: #666;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    
-    <!-- Header -->
-    <header role="banner">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-text">📍</div>
-                <div class="header-text">
-                    <h1>EquityBridge</h1>
-                    <p class="tagline">Grants Adviser</p>
-                </div>
+    <div class="container">
+        <h1>🌉 EquityBridge</h1>
+        <p class="subtitle">Find grants that match your organization's needs</p>
+
+        <form id="grantForm">
+            <div class="form-group">
+                <label for="name">Organization Name *</label>
+                <input type="text" id="name" required 
+                       placeholder="e.g., Community Health Clinic">
             </div>
-        </div>
-    </header>
 
-    <!-- Main Content -->
-    <main id="main-content" role="main">
-        <div class="container">
-            
-            <!-- Toggle between AI Chat and Form (AI-first approach) -->
-            <div class="mode-toggle" role="tablist" aria-label="Choose input method">
-                <button id="chat-tab" class="tab-button active" role="tab" aria-selected="true" aria-controls="chat-panel">
-                    <span class="tab-icon">🤖</span> Chat with AI
-                </button>
-                <button id="form-tab" class="tab-button" role="tab" aria-selected="false" aria-controls="form-panel">
-                    <span class="tab-icon">📝</span> Use Form Instead
-                </button>
+            <div class="form-group">
+                <label for="zip">Zip Code *</label>
+                <input type="text" id="zip" pattern="[0-9]{5}" required 
+                       placeholder="e.g., 90001">
             </div>
-            
-            <!-- AI Chat Section (for Mind Studio embed) - PRIMARY METHOD -->
-            <section id="chat-panel" class="tab-panel" aria-labelledby="chat-heading" role="tabpanel" aria-hidden="false">
-                <h2 id="chat-heading">Chat with Our Grant Advisor</h2>
-                <p class="intro-text">Have a conversation with our AI assistant to find grants that match your organization's needs. Simply tell us about your organization and we'll find the perfect grants for you.</p>
-                <div id="chat-container" class="chat-container">
-                    <div id="chat-messages" role="log" aria-live="polite" aria-label="Chat messages"></div>
-                    <div id="chat-input-container">
-                        <input 
-                            type="text" 
-                            id="chat-input" 
-                            placeholder="Type your message here..."
-                            aria-label="Chat input"
-                            autocomplete="off">
-                        <button id="chat-send" aria-label="Send message">Send</button>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Organization Profile Form - SECONDARY METHOD -->
-            <section id="form-panel" class="tab-panel hidden" aria-labelledby="profile-heading" role="tabpanel" aria-hidden="true">
-                <h2 id="profile-heading">Find Grants for Your Organization</h2>
-                
-                <form id="profile-form" aria-label="Organization profile">
-                    
-                    <div class="form-group">
-                        <label for="org-name">Organization Name <span class="required">*</span></label>
-                        <input 
-                            type="text" 
-                            id="org-name" 
-                            name="name" 
-                            required
-                            aria-required="true"
-                            placeholder="Your organization name">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="zip-code">Zip Code <span class="required">*</span></label>
-                        <input 
-                            type="text" 
-                            id="zip-code" 
-                            name="zip_code" 
-                            required
-                            aria-required="true"
-                            pattern="[0-9]{5}"
-                            placeholder="92501">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="mission">Mission Statement <span class="required">*</span></label>
-                        <textarea 
-                            id="mission" 
-                            name="mission" 
-                            required
-                            aria-required="true"
-                            rows="3"
-                            placeholder="Describe your organization's mission..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="focus-area">Focus Area <span class="required">*</span></label>
-                        <select id="focus-area" name="focus_area" required aria-required="true">
-                            <option value="">Select focus area</option>
-                            <option value="health">Community Health</option>
-                            <option value="environment">Environmental Justice</option>
-                            <option value="both">Both Health & Environment</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="budget">Annual Budget <span class="required">*</span></label>
-                        <input 
-                            type="number" 
-                            id="budget" 
-                            name="annual_budget" 
-                            required
-                            aria-required="true"
-                            placeholder="250000">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="staff-size">Staff Size <span class="required">*</span></label>
-                        <select id="staff-size" name="staff_size" required aria-required="true">
-                            <option value="">Select staff size</option>
-                            <option value="1-5">1-5 staff</option>
-                            <option value="6-20">6-20 staff</option>
-                            <option value="21-50">21-50 staff</option>
-                            <option value="50+">50+ staff</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="btn-primary">Find Matching Grants</button>
-                </form>
-            </section>
-            
-            <!-- Results Section -->
-            <section id="results" aria-labelledby="results-heading" class="hidden">
-                <h2 id="results-heading">Your Grant Matches</h2>
-                
-                <!-- Map and Results Container -->
-                <div class="results-container">
-                    <!-- Grant Results List -->
-                    <div id="results-content" class="results-list" role="region" aria-live="polite">
-                        <!-- Results will be inserted here by JavaScript -->
-                    </div>
-                    
-                    <!-- ArcGIS Map -->
-                    <div id="map-container" class="map-view" role="region" aria-label="Grant funding distribution map">
-                        <!-- Map will be initialized here by JavaScript -->
-                    </div>
-                </div>
-            </section>
-            
-        </div>
-    </main>
 
-    <!-- Footer -->
-    <footer role="contentinfo">
-        <div class="container">
-            <p>EquityBridge - Open Source Grant Discovery</p>
-            <p>CGU Hackathon 2025 - Theme: Health & Environmental Equity</p>
-        </div>
-    </footer>
+            <div class="form-group">
+                <label for="mission">Mission Statement *</label>
+                <textarea id="mission" required 
+                          placeholder="Describe your organization's mission and the communities you serve..."></textarea>
+            </div>
 
-    <script src="config.js"></script>
-    <script src="map.js"></script>
-    <script src="chat.js"></script>
-    <script src="app.js"></script>
+            <div class="form-group">
+                <label for="focus">Focus Area *</label>
+                <select id="focus" required>
+                    <option value="">Select...</option>
+                    <option value="health">Health</option>
+                    <option value="environment">Environment</option>
+                    <option value="both">Both</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="budget">Annual Budget *</label>
+                <input type="number" id="budget" min="0" required 
+                       placeholder="e.g., 250000">
+            </div>
+
+            <div class="form-group">
+                <label for="staff">Staff Size *</label>
+                <select id="staff" required>
+                    <option value="">Select...</option>
+                    <option value="1-5">1-5 staff</option>
+                    <option value="6-20">6-20 staff</option>
+                    <option value="21-50">21-50 staff</option>
+                    <option value="50+">50+ staff</option>
+                </select>
+            </div>
+
+            <button type="submit" id="submitBtn">Find Matching Grants</button>
+        </form>
+
+        <div id="loading" style="display: none;">
+            <div class="loading">🔍 Searching for grants...</div>
+        </div>
+
+        <div id="error" style="display: none;"></div>
+
+        <div id="results" style="display: none;"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('grantForm');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const results = document.getElementById('results');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Clear previous results
+            error.style.display = 'none';
+            results.style.display = 'none';
+            loading.style.display = 'block';
+            submitBtn.disabled = true;
+
+            // Get form data - FIXED: No wrapper object
+            const data = {
+                name: document.getElementById('name').value,
+                zip_code: document.getElementById('zip').value,
+                mission: document.getElementById('mission').value,
+                focus_area: document.getElementById('focus').value,
+                annual_budget: parseInt(document.getElementById('budget').value),
+                staff_size: document.getElementById('staff').value
+            };
+
+            console.log('Sending data:', data);
+
+            try {
+                const response = await fetch('https://ideal-flow-production-2795.up.railway.app/api/match-grants', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                console.log('Response status:', response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API Error (${response.status}): ${errorText}`);
+                }
+
+                const responseData = await response.json();
+                console.log('Response data:', responseData);
+
+                // FIXED: Access grants from response structure
+                const grantsList = responseData.grants || [];
+
+                // Display results
+                loading.style.display = 'none';
+                
+                if (grantsList.length === 0) {
+                    error.innerHTML = '<div class="error">No matching grants found. Try adjusting your criteria.</div>';
+                    error.style.display = 'block';
+                } else {
+                    let html = `<div class="results">
+                        <h2>🎯 Found ${responseData.matches_found} Matching Grants for ${responseData.organization}</h2>`;
+                    
+                    grantsList.forEach(grant => {
+                        html += `
+                            <div class="grant-card">
+                                <h3>${grant.title}</h3>
+                                <div class="funder">📋 ${grant.funder}</div>
+                                <div>
+                                    <span class="amount">${grant.amount}</span>
+                                    <span class="score">${grant.match_score}% Match</span>
+                                </div>
+                                <div class="match-reason">
+                                    <strong>Why this matches:</strong> ${grant.match_reason}
+                                </div>
+                                <div class="eligibility">
+                                    📍 Eligibility: ${grant.eligibility}
+                                </div>
+                                <div class="eligibility">
+                                    📅 Deadline: ${grant.deadline}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    results.innerHTML = html;
+                    results.style.display = 'block';
+                }
+
+            } catch (err) {
+                loading.style.display = 'none';
+                error.innerHTML = `<div class="error">
+                    <strong>❌ Error connecting to backend</strong><br><br>
+                    ${err.message}<br><br>
+                    <small>Backend API: https://ideal-flow-production-2795.up.railway.app/api/match-grants</small>
+                </div>`;
+                error.style.display = 'block';
+                console.error('Full error:', err);
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Test backend on page load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('https://ideal-flow-production-2795.up.railway.app/');
+                const data = await response.json();
+                console.log('Backend health check:', data);
+            } catch (err) {
+                console.error('Backend not responding:', err);
+            }
+        });
+    </script>
 </body>
 </html>
