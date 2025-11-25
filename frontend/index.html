@@ -1,331 +1,338 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EquityBridge - Grant Finder</title>
+    <title>EquityBridge</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.28/"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-        .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1.1em;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            font-family: inherit;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        button {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-        button:hover {
-            background: #5568d3;
-        }
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #667eea;
-            font-size: 1.2em;
-        }
-        .error {
-            background: #fee;
-            border: 2px solid #fcc;
-            color: #c33;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 20px 0;
-        }
-        .results {
-            margin-top: 40px;
-        }
-        .results h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-        }
-        .grant-card {
-            background: #f8f9ff;
-            border: 2px solid #e0e7ff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-        .grant-card h3 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-        .grant-card .funder {
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .grant-card .amount {
-            background: #667eea;
-            color: white;
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .grant-card .score {
-            background: #4ade80;
-            color: white;
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        .grant-card .description {
-            color: #666;
-            line-height: 1.5;
-            margin: 10px 0;
-        }
-        .grant-card .match-reason {
-            color: #667eea;
-            background: #f0f4ff;
-            padding: 10px;
-            border-radius: 4px;
-            margin: 10px 0;
-            font-size: 0.95em;
-        }
-        .grant-card .eligibility {
-            color: #666;
-            margin-top: 10px;
-            font-size: 0.9em;
+        body { font-family: Arial; margin: 0; padding: 0; background: #f5f5f5; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: center; }
+        .header h1 { margin: 0; }
+        .tabs { background: white; display: flex; border-bottom: 2px solid #ddd; max-width: 1200px; margin: 0 auto; }
+        .tab { padding: 15px 30px; cursor: pointer; border: none; background: none; font-size: 16px; color: #666; }
+        .tab.active { color: #667eea; border-bottom: 3px solid #667eea; font-weight: 600; }
+        .tab:hover { background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 20px; background: white; border-radius: 10px; display: none; }
+        .container.active { display: block; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
+        button { background: #667eea; color: white; padding: 15px; width: 100%; border: none; font-size: 18px; cursor: pointer; border-radius: 5px; margin-top: 10px; }
+        button:hover { background: #5568d3; }
+        .results-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        #mapDiv { height: 500px; border-radius: 8px; border: 2px solid #e0e7ff; }
+        .grant { background: #f8f9ff; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #4ade80; }
+        .grant h3 { margin-top: 0; }
+        .score { background: #4ade80; color: white; padding: 5px 10px; border-radius: 5px; display: inline-block; }
+        .legend { background: #f0f0f0; padding: 15px; border-radius: 5px; margin-bottom: 10px; font-size: 14px; }
+        .legend-item { margin: 5px 0; }
+        .green-dot { display: inline-block; width: 12px; height: 12px; background: #4ade80; border-radius: 50%; margin-right: 5px; }
+        .gray-dot { display: inline-block; width: 12px; height: 12px; background: #ccc; border-radius: 50%; margin-right: 5px; }
+        .chat-container { max-width: 600px; margin: 0 auto; }
+        .chat-messages { height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; background: #fafafa; }
+        .chat-message { margin: 10px 0; padding: 12px; border-radius: 8px; }
+        .chat-message.bot { background: #667eea; color: white; margin-right: 50px; }
+        .chat-message.user { background: #e0e7ff; color: #333; margin-left: 50px; text-align: right; }
+        .chat-input-area { display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; margin: 0; }
+        .chat-input-area button { width: auto; margin: 0; padding: 10px 20px; }
+        @media (max-width: 768px) {
+            .results-container { grid-template-columns: 1fr; }
+            .tabs { flex-wrap: wrap; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
         <h1>🌉 EquityBridge</h1>
-        <p class="subtitle">Find grants that match your organization's needs</p>
+        <p>AI-Powered Grant Discovery for LA County Organizations</p>
+    </div>
 
+    <div class="tabs">
+        <button class="tab" onclick="showTab('form')">📝 Grant Finder (Form)</button>
+        <button class="tab active" onclick="showTab('chat')">💬 AI Chat Assistant</button>
+    </div>
+
+    <!-- FORM TAB -->
+    <div id="form" class="container active">
+        <h2>Find Matching Grants</h2>
+        <p>Fill out the form below to find grants that match your organization's profile.</p>
         <form id="grantForm">
-            <div class="form-group">
-                <label for="name">Organization Name *</label>
-                <input type="text" id="name" required 
-                       placeholder="e.g., Community Health Clinic">
-            </div>
-
-            <div class="form-group">
-                <label for="zip">Zip Code *</label>
-                <input type="text" id="zip" pattern="[0-9]{5}" required 
-                       placeholder="e.g., 90001">
-            </div>
-
-            <div class="form-group">
-                <label for="mission">Mission Statement *</label>
-                <textarea id="mission" required 
-                          placeholder="Describe your organization's mission and the communities you serve..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="focus">Focus Area *</label>
-                <select id="focus" required>
-                    <option value="">Select...</option>
-                    <option value="health">Health</option>
-                    <option value="environment">Environment</option>
-                    <option value="both">Both</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="budget">Annual Budget *</label>
-                <input type="number" id="budget" min="0" required 
-                       placeholder="e.g., 250000">
-            </div>
-
-            <div class="form-group">
-                <label for="staff">Staff Size *</label>
-                <select id="staff" required>
-                    <option value="">Select...</option>
-                    <option value="1-5">1-5 staff</option>
-                    <option value="6-20">6-20 staff</option>
-                    <option value="21-50">21-50 staff</option>
-                    <option value="50+">50+ staff</option>
-                </select>
-            </div>
-
-            <button type="submit" id="submitBtn">Find Matching Grants</button>
+            <input id="name" placeholder="Organization Name" required>
+            <input id="zip" placeholder="Zip Code (e.g., 92501)" required>
+            <textarea id="mission" placeholder="Mission Statement" rows="3" required></textarea>
+            <select id="focus" required>
+                <option value="">Select Focus Area</option>
+                <option value="health">Health</option>
+                <option value="environment">Environment</option>
+                <option value="both">Both</option>
+            </select>
+            <input id="budget" type="number" placeholder="Annual Budget (e.g., 500000)" required>
+            <select id="staff" required>
+                <option value="">Staff Size</option>
+                <option value="1-5">1-5</option>
+                <option value="6-20">6-20</option>
+                <option value="21-50">21-50</option>
+                <option value="50+">50+</option>
+            </select>
+            <button type="submit">Find Matching Grants</button>
         </form>
+        <div id="formResults"></div>
+    </div>
 
-        <div id="loading" style="display: none;">
-            <div class="loading">🔍 Searching for grants...</div>
+    <!-- CHAT TAB -->
+    <div id="chat" class="container">
+        <div class="chat-container">
+            <h2>AI Grant Advisor</h2>
+            <p>Chat with our AI to find grants. Just tell us about your organization!</p>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message bot">
+                    Hi! I'm EquityBridge, your grant advisor. What's your organization's name?
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input id="chatInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">Send</button>
+            </div>
         </div>
-
-        <div id="error" style="display: none;"></div>
-
-        <div id="results" style="display: none;"></div>
+        <div id="chatResults"></div>
     </div>
 
     <script>
-        const form = document.getElementById('grantForm');
-        const loading = document.getElementById('loading');
-        const error = document.getElementById('error');
-        const results = document.getElementById('results');
-        const submitBtn = document.getElementById('submitBtn');
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Chat state
+        let chatStep = 0;
+        let chatData = {};
 
-            // Clear previous results
-            error.style.display = 'none';
-            results.style.display = 'none';
-            loading.style.display = 'block';
-            submitBtn.disabled = true;
+        function addMessage(text, isUser = false) {
+            const div = document.createElement('div');
+            div.className = 'chat-message ' + (isUser ? 'user' : 'bot');
+            div.textContent = text;
+            document.getElementById('chatMessages').appendChild(div);
+            document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+        }
 
-            // Get form data - FIXED: No wrapper object
-            const data = {
-                name: document.getElementById('name').value,
-                zip_code: document.getElementById('zip').value,
-                mission: document.getElementById('mission').value,
-                focus_area: document.getElementById('focus').value,
-                annual_budget: parseInt(document.getElementById('budget').value),
-                staff_size: document.getElementById('staff').value
-            };
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
 
-            console.log('Sending data:', data);
+            addMessage(msg, true);
+            input.value = '';
 
+            setTimeout(() => {
+                handleChatFlow(msg);
+            }, 500);
+        }
+
+        function handleChatFlow(msg) {
+            chatStep++;
+            
+            if (chatStep === 1) {
+                chatData.name = msg;
+                addMessage("Great! What's your zip code?");
+            } else if (chatStep === 2) {
+                chatData.zip_code = msg;
+                addMessage("Tell me about your organization's mission. What kind of work do you do?");
+            } else if (chatStep === 3) {
+                chatData.mission = msg;
+                addMessage("What's your main focus area? (health, environment, or both)");
+            } else if (chatStep === 4) {
+                chatData.focus_area = msg.toLowerCase();
+                addMessage("What's your approximate annual budget?");
+            } else if (chatStep === 5) {
+                chatData.annual_budget = parseInt(msg.replace(/[^0-9]/g, ''));
+                addMessage("How many staff members do you have? (1-5, 6-20, 21-50, or 50+)");
+            } else if (chatStep === 6) {
+                chatData.staff_size = msg;
+                addMessage("Perfect! Let me find matching grants for you...");
+                findGrantsFromChat();
+            }
+        }
+
+        async function findGrantsFromChat() {
             try {
-                const response = await fetch('https://ideal-flow-production-2795.up.railway.app/api/match-grants', {
+                const res = await fetch('https://ideal-flow-production-2795.up.railway.app/api/match-grants', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(chatData)
                 });
 
-                console.log('Response status:', response.status);
+                if (!res.ok) throw new Error('API error');
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`API Error (${response.status}): ${errorText}`);
-                }
+                const data = await res.json();
+                const grants = data.grants || [];
 
-                const responseData = await response.json();
-                console.log('Response data:', responseData);
-
-                // FIXED: Access grants from response structure
-                const grantsList = responseData.grants || [];
-
-                // Display results
-                loading.style.display = 'none';
+                addMessage(`🎯 I found ${grants.length} matching grants for ${chatData.name}!`);
                 
-                if (grantsList.length === 0) {
-                    error.innerHTML = '<div class="error">No matching grants found. Try adjusting your criteria.</div>';
-                    error.style.display = 'block';
-                } else {
-                    let html = `<div class="results">
-                        <h2>🎯 Found ${responseData.matches_found} Matching Grants for ${responseData.organization}</h2>`;
-                    
-                    grantsList.forEach(grant => {
-                        html += `
-                            <div class="grant-card">
-                                <h3>${grant.title}</h3>
-                                <div class="funder">📋 ${grant.funder}</div>
-                                <div>
-                                    <span class="amount">${grant.amount}</span>
-                                    <span class="score">${grant.match_score}% Match</span>
-                                </div>
-                                <div class="match-reason">
-                                    <strong>Why this matches:</strong> ${grant.match_reason}
-                                </div>
-                                <div class="eligibility">
-                                    📍 Eligibility: ${grant.eligibility}
-                                </div>
-                                <div class="eligibility">
-                                    📅 Deadline: ${grant.deadline}
-                                </div>
-                            </div>
-                        `;
+                displayChatResults(grants, chatData);
+                
+            } catch(err) {
+                addMessage("Sorry, I encountered an error. Please try the form instead.");
+            }
+        }
+
+        function displayChatResults(grants, profileData) {
+            const matchedTitles = grants.map(g => g.title);
+            let html = '<div class="results-container" style="margin-top: 30px;">';
+            
+            html += '<div>';
+            html += '<h2 style="color:#667eea;">LA County Grant Map</h2>';
+            html += '<div class="legend">';
+            html += '<div class="legend-item"><span class="green-dot"></span><strong>Your Matches</strong></div>';
+            html += '<div class="legend-item"><span class="gray-dot"></span>Other Grants</div>';
+            html += '</div>';
+            html += '<div id="chatMapDiv" style="height:500px; border-radius:8px; border:2px solid #e0e7ff;"></div></div>';
+            
+            html += '<div class="grants-list"><h2 style="color:#667eea;">Your Matching Grants</h2>';
+            grants.forEach(g => {
+                html += `
+                    <div class="grant">
+                        <h3>${g.title}</h3>
+                        <p><strong>Funder:</strong> ${g.funder}</p>
+                        <p><strong>Amount:</strong> ${g.amount}</p>
+                        <p><span class="score">${g.match_score}% Match</span></p>
+                        <p><em>${g.match_reason}</em></p>
+                        <p style="font-size:14px; color:#666;">📍 ${g.eligibility}</p>
+                    </div>
+                `;
+            });
+            html += '</div></div>';
+            
+            document.getElementById('chatResults').innerHTML = html;
+            
+            initializeMap('chatMapDiv', matchedTitles);
+        }
+
+        // Form submission
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/layers/FeatureLayer",
+            "esri/Graphic",
+            "esri/layers/GraphicsLayer"
+        ], function(Map, MapView, FeatureLayer, Graphic, GraphicsLayer) {
+            
+            window.initializeMap = function(containerId, matchedTitles) {
+                setTimeout(() => {
+                    const map = new Map({ basemap: "gray-vector" });
+                    const view = new MapView({
+                        container: containerId,
+                        map: map,
+                        center: [-118.2437, 34.0522],
+                        zoom: 9
                     });
                     
-                    html += '</div>';
-                    results.innerHTML = html;
-                    results.style.display = 'block';
+                    const grantsLayer = new FeatureLayer({
+                        url: "https://services.arcgis.com/hVnyNvwbpFFPDV5j/arcgis/rest/services/LA_County_Grant_Funding_Distribution/FeatureServer/0",
+                        outFields: ["*"],
+                        renderer: {
+                            type: "simple",
+                            symbol: {
+                                type: "simple-marker",
+                                size: 10,
+                                color: [200, 200, 200, 0.8],
+                                outline: { width: 1, color: [100, 100, 100] }
+                            }
+                        },
+                        popupTemplate: {
+                            title: "{Name}",
+                            content: "<b>Funder:</b> {Funder}<br><b>Amount:</b> ${Amount}<br><b>Focus:</b> {Focus}"
+                        }
+                    });
+                    
+                    map.add(grantsLayer);
+                    
+                    grantsLayer.when(() => {
+                        const query = grantsLayer.createQuery();
+                        query.where = "1=1";
+                        query.outFields = ["*"];
+                        query.returnGeometry = true;
+                        
+                        grantsLayer.queryFeatures(query).then((result) => {
+                            const highlightLayer = new GraphicsLayer();
+                            map.add(highlightLayer);
+                            
+                            result.features.forEach(feature => {
+                                const grantName = feature.attributes.Name;
+                                if (matchedTitles.some(title => grantName && grantName.includes(title.substring(0, 20)))) {
+                                    const highlightGraphic = new Graphic({
+                                        geometry: feature.geometry,
+                                        symbol: {
+                                            type: "simple-marker",
+                                            size: 14,
+                                            color: [74, 222, 128, 1],
+                                            outline: { width: 2, color: [255, 255, 255] }
+                                        },
+                                        attributes: feature.attributes,
+                                        popupTemplate: {
+                                            title: "✅ {Name}",
+                                            content: "<b>YOUR MATCH!</b><br><b>Funder:</b> {Funder}<br><b>Amount:</b> ${Amount}<br><b>Focus:</b> {Focus}"
+                                        }
+                                    });
+                                    highlightLayer.add(highlightGraphic);
+                                }
+                            });
+                        });
+                    });
+                }, 100);
+            };
+
+            document.getElementById('grantForm').onsubmit = async (e) => {
+                e.preventDefault();
+                const out = document.getElementById('formResults');
+                out.innerHTML = '<p style="text-align:center; color:#667eea;">🔍 Searching...</p>';
+                
+                try {
+                    const res = await fetch('https://ideal-flow-production-2795.up.railway.app/api/match-grants', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            name: document.getElementById('name').value,
+                            zip_code: document.getElementById('zip').value,
+                            mission: document.getElementById('mission').value,
+                            focus_area: document.getElementById('focus').value,
+                            annual_budget: parseInt(document.getElementById('budget').value),
+                            staff_size: document.getElementById('staff').value
+                        })
+                    });
+                    
+                    if (!res.ok) throw new Error('API error');
+                    
+                    const data = await res.json();
+                    const grants = data.grants || [];
+                    const matchedTitles = grants.map(g => g.title);
+                    
+                    let html = '<div class="results-container">';
+                    html += '<div><h2 style="color:#667eea;">LA County Grant Map</h2>';
+                    html += '<div class="legend">';
+                    html += '<div class="legend-item"><span class="green-dot"></span><strong>Your Matches</strong></div>';
+                    html += '<div class="legend-item"><span class="gray-dot"></span>Other Grants</div>';
+                    html += '</div><div id="mapDiv"></div></div>';
+                    
+                    html += '<div class="grants-list"><h2 style="color:#667eea;">Found ' + grants.length + ' Grants</h2>';
+                    grants.forEach(g => {
+                        html += `<div class="grant"><h3>${g.title}</h3>
+                            <p><strong>Funder:</strong> ${g.funder}</p>
+                            <p><strong>Amount:</strong> ${g.amount}</p>
+                            <p><span class="score">${g.match_score}% Match</span></p>
+                            <p><em>${g.match_reason}</em></p>
+                            <p style="font-size:14px; color:#666;">📍 ${g.eligibility}</p></div>`;
+                    });
+                    html += '</div></div>';
+                    
+                    out.innerHTML = html;
+                    initializeMap('mapDiv', matchedTitles);
+                    
+                } catch(err) {
+                    out.innerHTML = '<p style="color:red;">Error: ' + err.message + '</p>';
                 }
-
-            } catch (err) {
-                loading.style.display = 'none';
-                error.innerHTML = `<div class="error">
-                    <strong>❌ Error connecting to backend</strong><br><br>
-                    ${err.message}<br><br>
-                    <small>Backend API: https://ideal-flow-production-2795.up.railway.app/api/match-grants</small>
-                </div>`;
-                error.style.display = 'block';
-                console.error('Full error:', err);
-            } finally {
-                submitBtn.disabled = false;
-            }
-        });
-
-        // Test backend on page load
-        window.addEventListener('load', async () => {
-            try {
-                const response = await fetch('https://ideal-flow-production-2795.up.railway.app/');
-                const data = await response.json();
-                console.log('Backend health check:', data);
-            } catch (err) {
-                console.error('Backend not responding:', err);
-            }
+            };
         });
     </script>
 </body>
